@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="quiz.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>RAHUL - Quiz Project</title>
+    <style>
+        *{
+    box-sizing: border-box;
+    padding: 0px;
+    
+}
+body{
+    background-color: #ffffff;
+    margin: 0px;
+}
+header{
+    /* border: 1px solid red; */
+    background-color: #218380;
+    padding: 30px;
+    color: white;
+}
+main{
+    /* border: 1px solid red;  */
+    
+}
+table{
+    width: 100%;
+}
+#timeposition{
+    text-align: right;
+    
+}
+.all_center{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -68%); 
+    border: 1.5px solid rgb(184, 181, 181);
+    box-shadow: 7px 4px 10px rgba(180, 178, 178, 0.842);
+    padding: 20px;
+    border-radius: 20px;
+    min-width: 250px;
+}
+.btn_style{
+    background-color: #218380;
+    color: white;
+    border-radius: 7px;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.option{
+    background-color: #808000;
+    color: rgb(248, 245, 245);
+    padding: 7px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#intro_qz{
+    width: 70%;
+    /* display: none; */
+}
+#score_temp{
+    display: none;
+}
+#qus_temp{
+    width: 70%;
+    display: none;
+}
+#alldone{
+    display: none;
+}
+#timer{
+    color: red;
+}
+#leaderboard{
+    cursor: pointer;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <table>
+            <tr>
+                <td><a id=leaderboard>View Highscores <i class="fas   fa-hand-point-left fa-lg"></i>
+                    </a></td>
+                <td id="timeposition">Time : <span id="timer_con">00</span> </td>
+            </tr>
+        </table>
+    </header>
+    <main>
+
+        <div id="intro_qz" class="all_center">
+            <h1 id="intro_h1">Coding Quiz Challenge</h1>
+            <p id="intro_p">Try to answer following code related quesions within the time.<br/><br/>keep in mind that correct answers will penalize your score/time by tem seconds !
+            </p>
+            <button id="startquiz" class="btn_style">Start Quiz</button>
+        </div>
+
+        <div class="all_center" id="score_temp">
+            <h1>High Scores</h1>
+            <p>1. <span id="name1_tem">Winner</span>  <span id="score1_tem">00</span> </p>
+            <p>2. <span id="name2_tem">Winner</span>  <span id="score2_tem">00</span> </p>
+            <p>3. <span id="name3_tem">Winner</span>  <span id="score3_tem">00</span> </p>
+            <button class="btn_style" id="hs_back_btn">Go Back</button>
+            <button class="btn_style" id="clear_highscore">Clear Highscores</button>
+        </div>
+
+        <div class="all_center" id="qus_temp">
+            <h3 id="ques">Commonly used data types DO NOT include:</h3>
+            <p class="option" id="opt1">1. strings</p>
+            <p class="option" id="opt2">2. booleans</p>
+            <p class="option" id="opt3">3. alerts</p>
+            <p class="option" id="opt4">4. numbers</p>
+            <button class="btn_style" id="prev">Previous</button>
+            <button class="btn_style" id="next">next</button>
+        </div>
+
+        <div class=" all_center" id="alldone">
+            <h1>All Done !</h1>
+            <p>Your Final Score is <span id="score_tem">0</span> </p>
+            <label for="">Enter Initials :</label>
+            <input type="text" value="" placeholder="Name" id="name_tem">
+            <button class="btn_style" id="alldone_sub_btn">Submit</button>
+        </div>
+
+    </main>
+
+    <!-- <script src="quiz.js"></script> -->
+    <script>
+        const questions = [
+    {
+        questionText: "1. Commonly used data types DO NOT include:",
+        options: ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
+        answer: "3. alerts",
+    },
+    {
+        questionText: "2. Arrays in JavaScript can be used to store ______.",
+        options: [
+            "1. numbers and strings",
+            "2. other arrays",
+            "3. booleans",
+            "4. all of the above",
+        ],
+        answer: "4. all of the above",
+    },
+    {
+        questionText:
+            "3. String values must be enclosed within _____ when being assigned to variables.",
+        options: ["1. commas", "2. curly brackets", "3. quotes", "4. parentheses"],
+        answer: "3. quotes",
+    },
+    {
+        questionText:
+            "4. A very useful tool used during development and debugging for printing content to the debugger is:",
+        options: [
+            "1. JavaScript",
+            "2. terminal/bash",
+            "3. for loops",
+            "4. console.log",
+        ],
+        answer: "4. console.log",
+    },
+    {
+        questionText:
+            "5. Which of the following is a statement that can be used to terminate a loop, switch or label statement?",
+        options: ["1. break", "2. stop", "3. halt", "4. exit"],
+        answer: "1. break",
+    },
+];
+let time = 60;
+let score = 0;
+let highscore1=0 ;
+let highscore2=0 ;
+let highscore3=0 ;
+let name1="Winner1";
+let name2="Winner2";
+let name3="Winner3";
+let ques_id = 0;
+let pre_ans = [];
+let pre_choice_ans = [];
+let click = false;
+let choose_flag = true;
+let timer_flag=true;
+let ques = document.getElementById('ques');
+let opt1 = document.getElementById('opt1');
+let opt2 = document.getElementById('opt2');
+let opt3 = document.getElementById('opt3');
+let opt4 = document.getElementById('opt4');
+let next = document.getElementById('next');
+let prev = document.getElementById('prev');
+let timer_con = document.getElementById('timer_con');
+let option = document.getElementsByClassName('option')
+let startquiz = document.getElementById('startquiz');
+let alldone_sub_btn = document.getElementById('alldone_sub_btn');
+
+function timer() {
+    timer_con.innerHTML = time;
+    if (time > 0 && timer_flag){
+        time -= 1;
+        setTimeout(timer, 1000);
+    }
+        
+}
+
+let submit_flag = false;
+next.addEventListener('click', function () {
+    if(time>0){
+    if (submit_flag) {
+        score_tem.innerHTML = score;
+        qus_temp.style.display = "none";
+        alldone.style.display = "block";
+        submit_flag = false;
+        timer_flag=false;
+    }
+    if (ques_id < questions.length - 1) {
+        ques_id++;
+        for (let a = 0; a < option.length; a++) {
+            option[a].style.background = "#218380";
+        }
+        if (!click) {
+            pre_ans.push('#218380');
+            pre_choice_ans.push(opt1);
+        }
+        click = false;
+        if (ques_id == questions.length - 1) {
+            next.innerHTML = "Submit";
+            submit_flag = true;
+        }
+        ques.innerHTML = questions[ques_id]['questionText'];
+        opt1.innerHTML = questions[ques_id]['options'][0];
+        opt2.innerHTML = questions[ques_id]['options'][1];
+        opt3.innerHTML = questions[ques_id]['options'][2];
+        opt4.innerHTML = questions[ques_id]['options'][3];
+        choose_flag = true;
+    }
+    }
+    else{
+        score_tem.innerHTML = score;
+        qus_temp.style.display="none";
+        alldone.style.display="block";
+    }
+});
+
+prev.addEventListener('click', function () {
+    next.innerHTML = "Next";
+    if (ques_id > 0) {
+        ques_id--;
+        for (let a = 0; a < option.length; a++) {
+            option[a].style.background = "#218380";
+        }
+        pre_choice_ans[ques_id].style.background = pre_ans[ques_id];
+        ques.innerHTML = questions[ques_id]['questionText'];
+        opt1.innerHTML = questions[ques_id]['options'][0];
+        opt2.innerHTML = questions[ques_id]['options'][1];
+        opt3.innerHTML = questions[ques_id]['options'][2];
+        opt4.innerHTML = questions[ques_id]['options'][3];
+    }
+
+});
+
+opt1.addEventListener('click', function () {
+    if (choose_flag) {
+        choose_flag = false;
+        click = true;
+        pre_choice_ans.push(opt1);
+        if (opt1.innerHTML == questions[ques_id]['answer']) {
+            opt1.style.background = "green";
+            pre_ans.push('green');
+            score++;
+        }
+        else {
+            pre_ans.push('red');
+            opt1.style.background = "red";
+            for (a in option) {
+                if (option[a].innerHTML == questions[ques_id]['answer']) {
+                    option[a].style.background = "green";
+                    break;
+                }
+            }
+        }
+    }
+});
+
+opt2.addEventListener('click', function () {
+    if (choose_flag) {
+        choose_flag = false;
+        click = true;
+        pre_choice_ans.push(opt2);
+        if (opt2.innerHTML == questions[ques_id]['answer']) {
+            opt2.style.background = "green";
+            pre_ans.push('green');
+            score++;
+        }
+        else {
+            pre_ans.push('red');
+            opt2.style.background = "red";
+            for (a in option) {
+                if (option[a].innerHTML == questions[ques_id]['answer']) {
+                    option[a].style.background = "green";
+                    break;
+                }
+            }
+        }
+    }
+});
+
+opt3.addEventListener('click', function () {
+    if (choose_flag) {
+        choose_flag = false;
+        click = true;
+        pre_choice_ans.push(opt3);
+        if (opt3.innerHTML == questions[ques_id]['answer']) {
+            opt3.style.background = "green";
+            pre_ans.push('green');
+            score++;
+        }
+        else {
+            pre_ans.push('red');
+            opt3.style.background = "red";
+            for (a in option) {
+                if (option[a].innerHTML == questions[ques_id]['answer']) {
+                    option[a].style.background = "green";
+                    break;
+                }
+            }
+        }
+    }
+});
+
+opt4.addEventListener('click', function () {
+    if (choose_flag) {
+        choose_flag = false;
+        click = true;
+        pre_choice_ans.push(opt4);
+        if (opt4.innerHTML == questions[ques_id]['answer']) {
+            opt4.style.background = "green";
+            pre_ans.push('green');
+            score++;
+        }
+        else {
+            pre_ans.push('red');
+            opt4.style.background = "red";
+            for (a in option) {
+                if (option[a].innerHTML == questions[ques_id]['answer']) {
+                    option[a].style.background = "green";
+                    break;
+                }
+            }
+        }
+    }
+});
+
+startquiz.addEventListener('click', function () {
+    score = 0;
+    ques_id = 0;
+    pre_ans = [];
+    pre_choice_ans = [];
+    click = false;
+    choose_flag = true;
+    submit_flag = false;
+    next.innerHTML = "Next";
+    prev.innerHTML = "Previous";
+    ques.innerHTML = questions[0]['questionText'];
+    opt1.innerHTML = questions[0]['options'][0];
+    opt2.innerHTML = questions[0]['options'][1];
+    opt3.innerHTML = questions[0]['options'][2];
+    opt4.innerHTML = questions[0]['options'][3];
+    for (let a = 0; a < option.length; a++) 
+        option[a].style.background = "#218380";
+    intro_qz.style.display = "none";
+    qus_temp.style.display = "block";
+    timer_flag=true;
+    time=60;
+    timer();
+});
+
+alldone_sub_btn.addEventListener('click', function () {
+    let temp_name=name_tem.value;
+    if(score>highscore1){
+        highscore3=highscore2;
+        highscore2=highscore1;
+        highscore1=score;
+        name3=name2;
+        name2=name1;
+        name1=temp_name;
+    }
+    else if(score>highscore2){
+        highscore3=highscore2;
+        highscore2=score;
+        name3=name2;
+        name2=temp_name;
+    }
+    else if(score>highscore3){
+        highscore3=score;
+        name3=temp_name;
+    }
+    else{
+
+    }
+    score1_tem.innerHTML=highscore1;
+    score2_tem.innerHTML=highscore2;
+    score3_tem.innerHTML=highscore3;
+    name1_tem.innerHTML=name1;
+    name2_tem.innerHTML=name2;
+    name3_tem.innerHTML=name3;
+    name_tem.value="";
+    time=30;
+     timer_con.innerHTML =0;
+    alldone.style.display = "none";
+    score_temp.style.display = "block";
+});
+
+let hs_back_btn = document.getElementById('hs_back_btn');
+hs_back_btn.addEventListener('click', function () {
+    score_temp.style.display = "none";
+    intro_qz.style.display = "block";
+});
+
+let clear_highscore=document.getElementById('clear_highscore');
+clear_highscore.addEventListener('click',function(){
+    score1_tem.innerHTML=0;
+    score2_tem.innerHTML=0;
+    score3_tem.innerHTML=0;
+    name1_tem.innerHTML="Winner1";
+    name2_tem.innerHTML="Winner2";
+    name3_tem.innerHTML="Winner3";
+});
+
+let leaderboard=document.getElementById('leaderboard');
+leaderboard.addEventListener('click',function(){
+    intro_qz.style.display="none";
+    qus_temp.style.display="none";
+    alldone.style.display="none";
+    score_temp.style.display="block";
+    timer_flag=false;
+});
+
+    </script>
+</body>
+
+</html>
