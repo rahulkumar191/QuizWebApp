@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>My Qiize App</title>
+</head>
+<body>
+    <div class="body-container">
+        <div class="header">
+            <div class="view-score">
+                <span>View Highscores</span>
+                <span><i class="fas   fa-hand-point-left fa-lg"></i></span>
+            </div>
+            <div class="marking-box">
+                <span class="nu">1</span>
+                <hr>
+                <span class="de">10</span>
+            </div>
+            <div class="timer-box">
+                <span>Time: </span>
+                <span class="minutes">00</span>:<span class="seconds">00</span>
+            </div>
+        </div>
+
+        <!-- quize input container  -->
+        <div class="quiz-category-box container">
+        
+            <select name="trivia_category" class="category-box">
+                <option value="">Any Category</option>
+                <option value="18">Science: Computers</option>
+                <option value="19">Science: Mathematics</option>
+                <option value="9">General Knowledge</option>
+                <option value="23">History</option>
+            </select>
+        <hr>
+            <select name="difficulty" class="difficulty-box">
+                <option value="">Any Difficulty</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+    
+        <div class="main">
+
+            <!-- start quiz container  -->
+            <div class="start-quiz-box container">
+                <h1 class="heading">
+                    <span>Quiz Challenge</span>
+                </h1>
+                <p>Choose Any Category and Any Difficulty of questions and Try to answer following quesions within the time.</p>
+                <p>keep in mind that correct answers will penalize your score/time by tem seconds !</p>
+                <button class="start-quiz btn">Start Quiz</button>
+            </div>
+
+            <!-- question box container  -->
+            <div class="ques-box container">
+                <h2 class="heading question-box"></h2>
+                <div class="option-box"></div>
+                <div class="option-box"></div>
+                <div class="option-box"></div>
+                <div class="option-box"></div>
+                <div class="buttons">
+                    <button class="previous btn">Previous</button>
+                    <button class="next btn">Next</button>
+                </div>
+            </div>
+
+            <!-- alldone container  -->
+            <div class="alldone-box container">
+                <h2 class="heading">All Done !</h2>
+                <p>Your Final Score is: <span id="final-score">0</span> </p>
+                <input type="text" placeholder="Enter Name">
+                <button class="alldone-submit btn">Submit</button>
+            </div>
+
+            <!-- view score container  -->
+            <div class="high-scores container">
+                <h2 class="heading">
+                    <span>High Scores</span>
+                </h2>
+                <div class="toppers-box"></div>
+                <div class="buttons">
+                    <button class="go-back btn">Go Back</button>
+                    <button class="clear-scores btn">Clear Highscores</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- script  -->
+    <script src="./script.js"></script>
+</body>
+</html>
